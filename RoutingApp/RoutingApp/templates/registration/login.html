@@ -121,6 +121,18 @@
         display: none;
     }
 
+  /* Стиль для сообщений об ошибке */
+    .error-message {
+        text-align: center; /* Выравниваем текст по центру */
+        margin: 0 auto; /* Центрируем блок по горизонтали */
+        padding: 10px;
+        max-width: 400px; /* Устанавливаем максимальную ширину блока */
+        color: #ff0000; /* Красный цвет текста */
+        background-color: #ffe6e6; /* Светло-красный фон */
+        border: 1px solid #ff0000; /* Красная рамка */
+        border-radius: 5px;
+        margin-bottom: 10px;
+
 </style>
 
 <div class="welcome">
@@ -128,17 +140,18 @@
 </div>
 
 {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
+  <p class="error-message">Your username and password didn't match. Please try again.</p>
 {% endif %}
 
 {% if next %}
   {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
+    <p class="error-message">Your account doesn't have access to this page. To proceed,
     please login with an account that has access.</p>
   {% else %}
-    <p>Please login to see this page.</p>
+    <p class="error-message">Please login to see this page.</p>
   {% endif %}
 {% endif %}
+
 
 <div class="sign-in">
     <form method="post" action="{% url 'login' %}">
