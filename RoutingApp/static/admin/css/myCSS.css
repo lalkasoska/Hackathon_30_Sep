@@ -1,0 +1,20 @@
+.btn-vk {
+  background-color: #4c75a3;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.btn-google {
+  background-color: #dd4b39;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.button-icon {
+  vertical-align: middle;
+  margin-right: 10px;
+}

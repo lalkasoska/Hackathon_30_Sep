@@ -1,0 +1,94 @@
+{% load bootstrap4 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Yandex Maps API -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=19c7478f-a13f-47d0-8203-faafa0904d09&lang=en_US"
+            type="text/javascript"></script>
+
+    <title>Memories App</title>
+
+    {% bootstrap_css %}
+
+    <style>
+        body {
+            background-image: url("{% static 'images/White2.jpg' %}");
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .navbar-brand {
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: black;
+            margin-bottom: 20px;
+            font-size: 17pt;
+        }
+
+        .nav-item {
+            margin: 3px 10px;
+        }
+
+        .content {
+            flex-grow: 1;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<header>
+    {% block navbar %}
+    <!-- Add condition so that navbar doesn't display on starting page -->
+    {% if request.path != '/' %}
+    <nav class="navbar navbar-expand-sm navbar-light bg-warning">
+        <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+            <button aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation" class="navbar-toggler"
+                    data-target="#navbarNav" data-toggle="collapse"
+                    type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_memory' %}">Add
+                            Memory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+    {% endblock %}
+</header>
+
+<div class="content">
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>
