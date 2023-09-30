@@ -6,12 +6,15 @@
 <style>
 .welcome {
     text-align: center;
-    margin-top: 100px;
+     margin-top: 10%;
     margin-bottom: 40px;
     border-radius: 10px;
     padding: 10px;
     color: #272b38;
     background-color: #ffc800;
+    width:400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .memories {
@@ -69,11 +72,59 @@
     margin-right: 10px;
 }
 
+ /* Общий стиль для формы */
+    form {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Стиль для меток */
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    /* Стиль для текстовых полей и паролей */
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 16px;
+    }
+
+    /* Стиль для кнопки */
+     button {
+        display: block;
+        width: 100%;
+        margin-top: 8px;
+        padding: 8px; /* Уменьшаем отступы */
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        font-size: 16px;
+        cursor: pointer;
+        height: 50px;
+    }
+
+    /* Стиль для CSRF-токена */
+    input[name="csrfmiddlewaretoken"] {
+        display: none;
+    }
 
 </style>
 
 <div class="welcome">
-    <h1>Welcome to Places Remember!</h1>
+    <h1>Курьер</h1>
 </div>
 
 {% if form.errors %}
@@ -98,7 +149,7 @@
             <label for="id_password">Пароль:</label>
             <input type="password" id="id_password" name="password" required>
             <br>
-            <button type="submit" class="btn btn-primary">Войти</button>
+            <button type="submit" >Войти</button>
     </form>
 </div>
 {% endblock %}
