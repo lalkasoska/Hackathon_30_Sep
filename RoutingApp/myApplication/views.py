@@ -4,9 +4,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 # local Django
 from RoutingApp.forms import MemoryForm
+from RoutingApp.forms import OrderForm
 
 from .models import Memory
-
+from .models import Order
 
 def welcome(request):
     """
@@ -22,21 +23,13 @@ def home(request):
     """
     user = request.user
     profile_picture = None
-    memories = Memory.objects.filter(user=user)
+    memories = Memory.objects.filter(user=user) #delete
+    orders = Order.objects.filter(user=user)
 
-    # Retrieve the profile picture URL based on the authentication provider
-    if user.is_authenticated:
-        if user.socialaccount_set.filter(provider='google').exists():
-            google_provider = user.socialaccount_set.get(provider='google')
-            profile_picture = google_provider.extra_data.get('picture')
-        elif user.socialaccount_set.filter(provider='vk').exists():
-            vk_provider = user.socialaccount_set.get(provider='vk')
-            profile_picture = vk_provider.extra_data.get('photo_max_orig')
 
     context = {
         'user': user,
-        'profile_picture': profile_picture,
-        'memories': memories,
+        'orders': orders,
     }
     return render(request, 'home.html', context)
 
@@ -76,7 +69,7 @@ def add_memory(request):
 
 
 @login_required
-def display_memory(request, memory_id):
+def display_memory(request, memory_id): #edited here
     """
     Renders the display memory page for a specific memory.
     """
@@ -84,13 +77,13 @@ def display_memory(request, memory_id):
     memory = get_object_or_404(Memory, id=memory_id)
 
     if request.method == 'POST':
-        form = MemoryForm(request.POST, instance=memory)
+        form = OrderForm(request.POST, instance=memory)
         if form.is_valid():
             form.save()
             return redirect('home')
     else:
-        form = MemoryForm(instance=memory)
+        form = OrderForm(instance=memory)
 
     # Pass the memory to the template context
-    context = {'memory': memory, 'form': form}
+    context = {'memory': order, 'form': form}
     return render(request, 'display_memory.html', context)

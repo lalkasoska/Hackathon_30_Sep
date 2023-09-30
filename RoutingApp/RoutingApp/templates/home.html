@@ -58,12 +58,11 @@
         a New Memory</a><br>
 
     <!-- Memory list -->
-    {% if memories %}
+    {% if orders %} #edited here
     <ul class="memory-list">
-        {% for memory in memories %}
+        {% for order in orders %}
         <li>
-            <a class="btn btn-outline-dark"
-               href="{% url 'display_memory' memory.id %}">{{ memory }}</a>
+            <a class="btn btn-outline-dark">{{ order }}</a>
         </li>
         {% endfor %}
     </ul>
