@@ -31,8 +31,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='welcome'),
          name='logout'),
     path('home/', views.home, name='home'),
-    path('add_memory/', views.add_memory, name='add_memory'),
-    path('memory/<int:memory_id>/', views.display_memory,
-         name='display_memory'),
+    path('reroute/',views.build_routes, name='build_routes'),
     path('admin/', admin.site.urls),
 ]
