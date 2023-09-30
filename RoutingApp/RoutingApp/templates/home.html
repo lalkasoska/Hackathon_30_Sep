@@ -10,19 +10,19 @@
             text-align: center;
         }
 
-        .memory-list {
+        .order-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .memory-list li {
+        .order-list li {
             margin-bottom: 10px;
             border-radius: 25px;
             width: 400px;
         }
 
-        .memory-list li a {
+        .order-list li a {
             font-size: 15pt;
             width: 100%;
         }
@@ -36,20 +36,12 @@
             font-size: 20pt;
         }
 
-        .no-memories-message {
+        .no-orders-message {
             margin-top: 20px;
         }
 
 
     </style>
-    <!-- User profile header -->
-    <!--<div class="profile-header">-->
-    <!--    <div class="centered-content">-->
-    <!--        <img alt="Profile Picture" class="profile-picture"-->
-    <!--             src="{{ profile_picture }}">-->
-    <!--        <h1>{{ user.first_name }} {{ user.last_name }}</h1>-->
-    <!--    </div>-->
-    <!--</div>-->
 
     <div class="centered-content">
         <div id="loading" style="display: none;">Идёт оптимизация...</div>
@@ -68,9 +60,9 @@
                 });
             });
         </script>
-        <!-- Memory list -->
+        <!-- Список пунктов доставки -->
         {% if orders %}
-            <ul class="memory-list">
+            <ul class="order-list">
                 {% for order in orders %}
                     <li>
                         <a class="btn btn-outline-dark">{{ order }}</a>
@@ -78,7 +70,7 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <h2 class="no-memories-message">У вас пока нет активных заказов. Обратитесь к администратору.</h2>
+            <h2 class="no-orders-message">У вас пока нет активных заказов. Обратитесь к администратору.</h2>
         {% endif %}
     </div>
 

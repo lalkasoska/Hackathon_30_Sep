@@ -46,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'RoutingApp.urls'
@@ -99,21 +100,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': '592385136330-c7liehdd269qevh61n5r1lhv67ng1kcp.apps'
-                         '.googleusercontent.com',
-            'secret': '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',
-        },
-    },
-    'vk': {
-        'APP': {
-            'client_id': '51652140',
-            'secret': '3X8coX4OPfaARRDfwlMg',
-        },
-    },
-}
 
 LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'welcome'
