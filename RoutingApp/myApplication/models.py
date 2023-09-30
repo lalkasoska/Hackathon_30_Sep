@@ -28,3 +28,4 @@ class Order(models.Model):
     ord_adress_name = models.CharField(max_length= 100)
     ord_adress_loc = models.CharField(max_length= 100)
     ord_time = models.TimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE) #Courier
