@@ -27,7 +27,7 @@ from myApplication import views
 
 urlpatterns = [
     path('', views.welcome, name='welcome'),
-    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', auth_views.LogoutView.as_view(next_page='welcome'),
          name='logout'),
     path('home/', views.home, name='home'),
