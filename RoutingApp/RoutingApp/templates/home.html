@@ -1,72 +1,85 @@
 <!--{% extends 'base.html' %}-->
 
 {% block content %}
-<style>
-.centered-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
+    <style>
+        .centered-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-.memory-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .memory-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.memory-list li {
-    margin-bottom: 10px;
-    border-radius: 25px;
-    width: 400px;
-}
+        .memory-list li {
+            margin-bottom: 10px;
+            border-radius: 25px;
+            width: 400px;
+        }
 
-.memory-list li a {
-    font-size: 15pt;
-    width: 100%;
-}
+        .memory-list li a {
+            font-size: 15pt;
+            width: 100%;
+        }
 
-.profile-picture {
-    border-radius: 15%;
-}
+        .profile-picture {
+            border-radius: 15%;
+        }
 
-.add-memory-button {
-    width: 300px;
-    font-size: 20pt;
-}
+        .add-memory-button {
+            width: 300px;
+            font-size: 20pt;
+        }
 
-.no-memories-message {
-    margin-top: 20px;
-}
+        .no-memories-message {
+            margin-top: 20px;
+        }
 
 
+    </style>
+    <!-- User profile header -->
+    <!--<div class="profile-header">-->
+    <!--    <div class="centered-content">-->
+    <!--        <img alt="Profile Picture" class="profile-picture"-->
+    <!--             src="{{ profile_picture }}">-->
+    <!--        <h1>{{ user.first_name }} {{ user.last_name }}</h1>-->
+    <!--    </div>-->
+    <!--</div>-->
 
-</style>
-<!-- User profile header -->
-<!--<div class="profile-header">-->
-<!--    <div class="centered-content">-->
-<!--        <img alt="Profile Picture" class="profile-picture"-->
-<!--             src="{{ profile_picture }}">-->
-<!--        <h1>{{ user.first_name }} {{ user.last_name }}</h1>-->
-<!--    </div>-->
-<!--</div>-->
+    <div class="centered-content">
+        <div id="loading" style="display: none;">Идёт оптимизация...</div>
 
-<div class="centered-content">
+        {% if request.user.is_superuser %}
+            <form action="{% url 'build_routes' %}" method="get">
+                <input type="submit" id="submit-btn" value="Рассчитать маршруты">
+            </form>
+        {% endif %}
 
-    <!-- Memory list -->
-    {% if orders %} #edited here
-    <ul class="memory-list">
-        {% for order in orders %}
-        <li>
-            <a class="btn btn-outline-dark">{{ order }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <h2 class="no-memories-message">There are no memories yet. Try adding a new
-        one!</h2>
-    {% endif %}
-</div>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#submit-btn').on('click', function () {
+                    $('#loading').show(); // Show the loading message when the button is clicked
+                });
+            });
+        </script>
+        <!-- Memory list -->
+        {% if orders %}
+            <ul class="memory-list">
+                {% for order in orders %}
+                    <li>
+                        <a class="btn btn-outline-dark">{{ order }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2 class="no-memories-message">У вас пока нет активных заказов. Обратитесь к администратору.</h2>
+        {% endif %}
+    </div>
 
 {% endblock %}

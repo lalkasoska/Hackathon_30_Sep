@@ -4,11 +4,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 
+import datetime
+from django.contrib.auth.decorators import user_passes_test
+
 from .utils import get_time_from_a_to_b
 
 # local Django
 
 from .models import Order
+
 
 def welcome(request):
     """
@@ -23,8 +27,7 @@ def home(request):
     Renders the home page with the user's memories.
     """
     user = request.user
-    orders = Order.objects.filter(user=user)
-
+    orders = Order.objects.filter(user=user).order_by('ord_delivery_order')
 
     context = {
         'user': user,
@@ -36,21 +39,28 @@ def home(request):
 
 
 
-
-
+@user_passes_test(lambda u: u.is_superuser)
 def build_routes(request):
     """Solve the VRP with time windows."""
     print("BUILDING ROUTES!!!")
     # Instantiate the data problem.
-    orders = Order.objects.all()
+    depotOrder = Order()
+    depotOrder.ord_adress_name = "Депо"
+    depotOrder.ord_time = datetime.time(hour=0, minute=0, second=0)
+    depotOrder.ord_adress_loc = '56.013836032667484,92.85438732340864'
+    orders = [depotOrder] + list(Order.objects.all())
     data = {}
-    data["time_matrix"] = [[get_time_from_a_to_b(order.ord_adress_loc, order2.ord_adress_loc) for order2 in orders] for order in orders]
+    data["time_matrix"] = [
+        [get_time_from_a_to_b(order.ord_adress_loc, order2.ord_adress_loc) // 60 for order2 in orders] for order in
+        orders]
+    for line in data["time_matrix"]:
+        print(line)
     data["time_windows"] = []
     for order in orders:
         t = order.ord_time
-        seconds = t.hour*3600 + t.minute*60 + t.second
-        data["time_windows"].append((seconds//60-60, seconds//60+60))
-    data["num_vehicles"] = 4
+        seconds = t.hour * 3600 + t.minute * 60 + t.second
+        data["time_windows"].append((seconds // 60 - 60, seconds // 60 + 60))
+    data["num_vehicles"] = 1
     data["depot"] = 0
     print(data)
     # Create the routing index manager.
@@ -78,8 +88,8 @@ def build_routes(request):
     time = "Time"
     routing.AddDimension(
         transit_callback_index,
-        1800,  # allow waiting time
-        1800,  # maximum time per vehicle
+        1440,  # allow waiting time
+        1440,  # maximum time per vehicle
         False,  # Don't force start cumul to zero.
         time,
     )
@@ -113,6 +123,8 @@ def build_routes(request):
 
     # Solve the problem.
     solution = routing.SolveWithParameters(search_parameters)
+    print(solution)
+    result = []
 
     def print_solution(data, manager, routing, solution):
         """Prints solution on console."""
@@ -124,6 +136,7 @@ def build_routes(request):
             plan_output = f"Route for vehicle {vehicle_id}:\n"
             while not routing.IsEnd(index):
                 time_var = time_dimension.CumulVar(index)
+                result.append(manager.IndexToNode(index))
                 plan_output += (
                     f"{manager.IndexToNode(index)}"
                     f" Time({solution.Min(time_var)},{solution.Max(time_var)})"
@@ -139,10 +152,18 @@ def build_routes(request):
             print(plan_output)
             total_time += solution.Min(time_var)
         print(f"Total time of all routes: {total_time}min")
+
     # Print solution on console.
+
     if solution:
         print_solution(data, manager, routing, solution)
-    return render(request, 'home.html')
+    print(result)
+    for i, k in enumerate(result[1:]):
+        print(orders[k].ord_adress_name)
+        orders[k].ord_delivery_order = i
+        orders[k].save()
+    return redirect('home')
+
 
 if __name__ == "__main__":
     build_routes()

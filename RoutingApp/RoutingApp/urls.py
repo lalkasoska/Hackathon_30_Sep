@@ -31,6 +31,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='welcome'),
          name='logout'),
     path('home/', views.home, name='home'),
-    path('reroute/',views.build_routes, name='build_routes'),
+    path('reroute/', views.build_routes, name='build_routes'),
     path('admin/', admin.site.urls),
 ]
