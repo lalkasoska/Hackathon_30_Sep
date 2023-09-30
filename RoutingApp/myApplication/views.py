@@ -14,7 +14,7 @@ def welcome(request):
     """
     Renders the welcome page.
     """
-    return render(request, 'welcome.html')
+    return render(request, 'registration/login.html')
 
 
 @login_required

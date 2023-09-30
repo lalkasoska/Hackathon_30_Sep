@@ -1,0 +1,104 @@
+<!--{% extends 'base.html' %}-->
+<!--{% load socialaccount %}-->
+{% load static %}
+{% block content %}
+
+<style>
+.welcome {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    border-radius: 10px;
+    padding: 10px;
+    color: #272b38;
+    background-color: #ffc800;
+}
+
+.memories {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.intro {
+    text-align: justify;
+    margin-top: 20px;
+    border-radius: 10px;
+    padding: 20px;
+    color: #272b38;
+    font-family: 'Bangers', sans-serif;
+    font-size: 25px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.intro p:first-child {
+    margin-top: 0;
+}
+
+.sign-in {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16pt;
+    transition: background-color 0.3s;
+    width: 330px;
+    height: 70px;
+    line-height: 35px;
+    text-align: center;
+    color: #fff;
+}
+
+.btn-google {
+    background-color: #db4437;
+}
+
+.btn-vk {
+    background-color: #3399ff;
+}
+
+.button-icon {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+
+</style>
+
+<div class="welcome">
+    <h1>Welcome to Places Remember!</h1>
+</div>
+
+{% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+  {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+  {% else %}
+    <p>Please login to see this page.</p>
+  {% endif %}
+{% endif %}
+
+<div class="sign-in">
+    <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="id_username">Логин:</label>
+            <input type="text" id="id_username" name="username" required>
+            <br>
+            <label for="id_password">Пароль:</label>
+            <input type="password" id="id_password" name="password" required>
+            <br>
+            <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+</div>
+{% endblock %}
