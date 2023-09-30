@@ -52,7 +52,7 @@
 <header>
     {% block navbar %}
     <!-- Add condition so that navbar doesn't display on starting page -->
-    {% if request.path != '/' %}
+    {% if request.path != '/' and request.path != '/accounts/login/' %}
     <nav class="navbar navbar-expand-sm navbar-light bg-warning">
         <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
             <button aria-controls="navbarNav" aria-expanded="false"
