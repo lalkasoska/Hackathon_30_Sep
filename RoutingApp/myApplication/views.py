@@ -45,13 +45,14 @@ def build_routes(request):
     orders = Order.objects.all()
     data = {}
     data["time_matrix"] = [[get_time_from_a_to_b(order.ord_adress_loc, order2.ord_adress_loc) for order2 in orders] for order in orders]
-
-    a_timedelta = date_time - datetime.datetime(1900, 1, 1)
-    seconds = a_timedelta.total_seconds()
-    data["time_windows"] = [((order.ord_time.total_seconds()- datetime.datetime(1900, 1, 1)).total_seconds()-3600,(order.ord_time.total_seconds()- datetime.datetime(1900, 1, 1)).total_seconds()+3600) for order in orders]
+    data["time_windows"] = []
+    for order in orders:
+        t = order.ord_time
+        seconds = t.hour*3600 + t.minute*60 + t.second
+        data["time_windows"].append((seconds//60-60, seconds//60+60))
     data["num_vehicles"] = 4
     data["depot"] = 0
-
+    print(data)
     # Create the routing index manager.
     manager = pywrapcp.RoutingIndexManager(
         len(data["time_matrix"]), data["num_vehicles"], data["depot"]
@@ -141,7 +142,7 @@ def build_routes(request):
     # Print solution on console.
     if solution:
         print_solution(data, manager, routing, solution)
-    return render(request, 'welcome.html')
+    return render(request, 'home.html')
 
 if __name__ == "__main__":
-    build_routes(0)
+    build_routes()
